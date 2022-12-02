@@ -3,10 +3,10 @@ package sleepingQueens;
 import java.util.*;
 
 public class GameState {
-    private int numberOfPlayers;
-    private int onTurn;
-    private Set<SleepingQueenPosition> sleepingQueens;
-    private Map<HandPosition, Optional<Card>> cards;
-    private Map<AwokenQueenPosition, Queen> awokenQueens;
-    private List<Card> cardsDiscardedLastTurn;
+    public int numberOfPlayers;
+    public int onTurn;
+    public Set<SleepingQueenPosition> sleepingQueens;
+    public Map<HandPosition, Optional<Card>> cards;
+    public Map<AwokenQueenPosition, Queen> awokenQueens;
+    public List<Card> cardsDiscardedLastTurn;
 }

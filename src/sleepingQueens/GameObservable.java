@@ -1,6 +1,7 @@
 package sleepingQueens;
 
 public class GameObservable {
+    public ShuffleStrategy shuffleStrategy;
 
     public void add(ObserverInterface observer) {
 
@@ -16,5 +17,9 @@ public class GameObservable {
 
     public void notifyAll(GameState message) {
 
+    }
+
+    public void setShuffleStrategy(ShuffleStrategy shuffleStrategy){
+        this.shuffleStrategy = shuffleStrategy;
     }
 }

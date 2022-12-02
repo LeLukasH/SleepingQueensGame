@@ -1,6 +1,12 @@
 package sleepingQueens;
 
 public class Card {
-    private CardType type;
-    private int value;
+    public CardType type;
+    public int value;
+    public Card(CardType ct, int v) {
+        type = ct;
+        value = v;
+    }
+
+
 }

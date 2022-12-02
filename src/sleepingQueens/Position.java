@@ -1,17 +1,32 @@
 package sleepingQueens;
 
-import java.util.Optional;
+public interface Position {
 
-public class Position {
-    private Optional<HandPosition> handPosition;
-    private Optional<SleepingQueenPosition> sleepingQueenPosition;
-    private Optional<AwokenQueenPosition> awokenQueenPosition;
+    int getCardIndex();
+    void setCardIndex(int cardIndex);
+    /*
+    private final Optional<HandPosition> handPosition;
+    private final Optional<SleepingQueenPosition> sleepingQueenPosition;
+    private final Optional<AwokenQueenPosition> awokenQueenPosition;
 
-    public Position(HandPosition h) {handPosition = Optional.ofNullable(h);}
-    public Position(SleepingQueenPosition s) {sleepingQueenPosition = Optional.ofNullable(s);}
-    public Position(AwokenQueenPosition a) {awokenQueenPosition = Optional.ofNullable(a);}
+    public Position(HandPosition h) {
+        handPosition = Optional.ofNullable(h);
+        sleepingQueenPosition = Optional.empty();
+        awokenQueenPosition = Optional.empty();
+    }
+    public Position(SleepingQueenPosition s) {
+        handPosition = Optional.empty();
+        sleepingQueenPosition = Optional.ofNullable(s);
+        awokenQueenPosition = Optional.empty();
+    }
+    public Position(AwokenQueenPosition a) {
+        handPosition = Optional.empty();
+        sleepingQueenPosition = Optional.empty();
+        awokenQueenPosition = Optional.ofNullable(a);
+    }
 
     public Optional<HandPosition> getHandPosition() {return handPosition;}
     public Optional<SleepingQueenPosition> getSleepingQueenPosition() {return sleepingQueenPosition;}
     public Optional<AwokenQueenPosition> getAwokenQueenPosition() {return awokenQueenPosition;}
+     */
 }
