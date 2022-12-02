@@ -112,7 +112,7 @@ public class Player {
                     return;
                 }
             }
-            EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards(this);
+            EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
             if (!evaluateNumberedCards.play(evaluateCards)) {
                 System.out.println("Bad number combination...");
                 return;
