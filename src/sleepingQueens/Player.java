@@ -78,7 +78,7 @@ public class Player {
                         return;
                     }
                     else {
-                        EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards(this);
+                        EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
                         if (!evaluateNumberedCards.play(List.of(firstCard.get(), secondCard.get()))) {
                             return;
                         }
