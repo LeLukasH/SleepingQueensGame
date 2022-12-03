@@ -35,6 +35,17 @@ public class GameFinished implements GameFinishedStrategy{
                 return Optional.of(playerIdx);
             }
         }
+        if (game.gameState.sleepingQueens.isEmpty()) {
+            int maxPoints = -1;
+            int winningPlayerIdx = -1;
+            for (Map.Entry<Integer, Integer> entry : playerPoints.entrySet()) {
+                if (entry.getValue() > maxPoints) {
+                    maxPoints = entry.getValue();
+                    winningPlayerIdx = entry.getKey();
+                }
+            }
+            return Optional.of(winningPlayerIdx);
+        }
         return Optional.empty();
     }
 }
