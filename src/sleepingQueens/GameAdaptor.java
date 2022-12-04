@@ -7,6 +7,7 @@ public class GameAdaptor implements GamePlayerInterface{
 
     public GameAdaptor(Game game) {
         this.game = game;
+        gameObservable = new GameObservable(this);
     }
 
     @Override
