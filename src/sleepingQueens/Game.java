@@ -6,10 +6,11 @@ public class Game {
 
     public GameAdaptor gameAdaptor;
     public SleepingQueens sleepingQueens;
-    public Map<Integer, Player> players;
     public DrawingAndThrashPile drawingAndThrashPile;
     public GameState gameState;
-    private List<Integer> playersOrder;
+    public Map<Integer, Player> players;
+    public List<Integer> playersOrder;
+    private int onTurn;
 
     public Game(GameAdaptor gameAdaptor) {
         this.gameAdaptor = gameAdaptor;
@@ -17,23 +18,36 @@ public class Game {
         sleepingQueens = new SleepingQueens(this);
         gameState = new GameState();
         gameState.numberOfPlayers = players.size();
-        gameState.onTurn = 0;
+        onTurn = 0;
     }
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
         if (!players.containsKey(playerIdx)) return Optional.empty();
         players.get(playerIdx).play(cards);
-
-        return null;
+        updateGameState();
+        drawingAndThrashPile.newTurn();
+        onTurn = (onTurn + 1) % players.size();
+        return Optional.ofNullable(gameState);
     }
 
     private void updateGameState() {
-        gameState.onTurn = (gameState.onTurn + 1) % players.size();
         Set<SleepingQueenPosition> sleepingQueenPositions = new HashSet<>();
         for (Map.Entry<Position, Queen> entry : sleepingQueens.getQueens().entrySet()) {
             sleepingQueenPositions.add((SleepingQueenPosition) entry.getKey());
         }
         gameState.sleepingQueens = sleepingQueenPositions;
         gameState.cardsDiscardedLastTurn = drawingAndThrashPile.getCardsDiscardedThisTurn();
-
+        Map<HandPosition, Optional<Card>> playerCards = new HashMap<>();
+        for (Map.Entry<Integer, Optional<Card>> entry : players.get(gameState.onTurn).getPlayerState().cards.entrySet()) {
+            playerCards.put(new HandPosition(entry.getKey(), gameState.onTurn), entry.getValue());
+        }
+        gameState.cards = playerCards;
+        Map<AwokenQueenPosition, Queen> playersQueens = new HashMap<>();
+        for (Map.Entry<Integer, Player> entry : players.entrySet()) {
+            for (Map.Entry<Integer, Queen> entryAwokenQueens : entry.getValue().getPlayerState().awokenQueens.entrySet()) {
+                playersQueens.put(new AwokenQueenPosition(entryAwokenQueens.getKey(), entry.getKey()), entryAwokenQueens.getValue());
+            }
+        }
+        gameState.awokenQueens = playersQueens;
+        gameState.onTurn = (playersOrder.get(onTurn) + 1) % players.size();
     }
 }

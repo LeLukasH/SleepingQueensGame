@@ -7,6 +7,4 @@ public class Card {
         type = ct;
         value = v;
     }
-
-
 }
