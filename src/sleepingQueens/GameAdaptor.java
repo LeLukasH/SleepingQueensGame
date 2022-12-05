@@ -24,10 +24,10 @@ public class GameAdaptor implements GamePlayerInterface{
         int playerIndex = playerConverterString.get(player);
         List<Position> cardsSend = new ArrayList<>();
         for (String x : cards.split(" ")) {
-            int cardIndex = Integer.parseInt(String.valueOf(x.charAt(1)));
+            int firstNumber = Integer.parseInt(String.valueOf(x.charAt(1)));
             switch (x.charAt(0)) {
-                case 'h' -> cardsSend.add(new HandPosition(cardIndex, playerIndex));
-                case 'a' -> cardsSend.add(new AwokenQueenPosition(cardIndex, Integer.parseInt(String.valueOf(x.charAt(2)))));
+                case 'h'-> cardsSend.add(new HandPosition(firstNumber, playerIndex));
+                case 'a'-> cardsSend.add(new AwokenQueenPosition(Integer.parseInt(String.valueOf(x.charAt(2))), firstNumber));
                 case 's' -> cardsSend.add(new SleepingQueenPosition(Integer.parseInt(x.substring(1))));
             }
         }
