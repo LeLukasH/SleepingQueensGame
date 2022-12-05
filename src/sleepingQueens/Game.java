@@ -8,6 +8,7 @@ public class Game {
     public DrawingAndThrashPile drawingAndThrashPile;
     public GameState gameState;
     public Map<Integer, Player> players;
+    private final GameFinishedStrategy gameFinished;
 
     public Game(int numberOfPlayers) {
         drawingAndThrashPile = new DrawingAndThrashPile(this);
@@ -18,13 +19,20 @@ public class Game {
         gameState = new GameState();
         gameState.numberOfPlayers = numberOfPlayers;
         gameState.onTurn = 0;
+        gameFinished = new GameFinished(this);
     }
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
-        if (!players.containsKey(playerIdx)) return Optional.empty();
+        if (!players.containsKey(playerIdx) || playerIdx != gameState.onTurn) return Optional.empty();
         if (players.get(playerIdx).play(cards)) {
             gameState.onTurn = (gameState.onTurn + 1) % gameState.numberOfPlayers;
             updateGameState();
             drawingAndThrashPile.newTurn();
+            Optional<Integer> winner = gameFinished.isFinished();
+            if (winner.isPresent()) {
+                System.out.println("Winner is: " + winner.get());
+                System.out.println("Game Over");
+                gameState.onTurn = -1;
+            }
             return Optional.ofNullable(gameState);
         }
         System.out.println("Play Again...");
