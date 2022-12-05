@@ -7,7 +7,6 @@ public class GameAdaptor implements GamePlayerInterface{
     public Game game;
     public GameObservable gameObservable;
     public Map<String, Integer> playerConverterString; // External -> Internal (PlayerIdx)
-    public Map<Integer, Integer> playerConverterObservable; // Internal -> External
 
     public GameAdaptor(GameObservable gameObservable) {
         if (gameObservable.getNumberOfPlayers() < 2){
@@ -35,5 +34,9 @@ public class GameAdaptor implements GamePlayerInterface{
         if (gs.isEmpty()) return "Error";
         gameObservable.notifyAll(gs.get());
         return "You played your cards.";
+    }
+
+    public void setShuffleStrategy(ShuffleStrategy shuffleStrategy) {
+        game.drawingAndThrashPile.setShuffleStrategy(shuffleStrategy);
     }
 }
