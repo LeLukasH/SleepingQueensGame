@@ -6,16 +6,22 @@ public class GameAdaptor implements GamePlayerInterface{
 
     public Game game;
     public GameObservable gameObservable;
-    public Map<String, Integer> playerConverter; // External -> Internal (PlayerIdx)
+    public Map<String, Integer> playerConverterString; // External -> Internal (PlayerIdx)
+    public Map<Integer, Integer> playerConverterObservable; // Internal -> External
 
-    public GameAdaptor(Game game) {
-        this.game = game;
-        gameObservable = new GameObservable(this);
+    public GameAdaptor(GameObservable gameObservable) {
+        if (gameObservable.getNumberOfPlayers() < 2){
+            System.out.println("Too little players!");
+        }
+        else {
+            this.gameObservable = gameObservable;
+            game = new Game(gameObservable.getNumberOfPlayers());
+        }
     }
 
     @Override
     public String play(String player, String cards) {
-        int playerIndex = playerConverter.get(player);
+        int playerIndex = playerConverterString.get(player);
         List<Position> cardsSend = new ArrayList<>();
         for (String x : cards.split(" ")) {
             int cardIndex = Integer.parseInt(String.valueOf(x.charAt(1)));
@@ -26,7 +32,8 @@ public class GameAdaptor implements GamePlayerInterface{
             }
         }
         Optional<GameState> gs = game.play(playerIndex, cardsSend);
-        if (gs.isEmpty()) return "Error...";
-        return gs.get().toString();
+        if (gs.isEmpty()) return "Error";
+        gameObservable.notifyAll(gs.get());
+        return "You played your cards.";
     }
 }

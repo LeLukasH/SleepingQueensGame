@@ -4,11 +4,8 @@ import java.util.*;
 
 public class SleepingQueens extends QueenCollection {
     private final Map<Position, Queen> queens;
-    private final Game game;
 
-    public SleepingQueens (Game game) {
-        this.game = game;
-        // Initialize Sleeping Queens
+    public SleepingQueens () {
         queens = new HashMap<>();
         ArrayList<Integer> cardIndexes = new ArrayList<>();
         for (int i = 0; i < 12; i++) {cardIndexes.add(i);}

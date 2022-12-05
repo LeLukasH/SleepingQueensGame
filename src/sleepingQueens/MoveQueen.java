@@ -19,7 +19,6 @@ public class MoveQueen {
         }
         else if (targetQueen instanceof AwokenQueenPosition) {
             int targetPlayerIndex = ((AwokenQueenPosition) targetQueen).getPlayerIndex();
-
             Optional<Queen> removedQueen = player.game.players.get(targetPlayerIndex).awokenQueens.removeQueen(targetQueen);
             if (removedQueen.isEmpty()) return false;
             returnQueenCollection.addQueen(removedQueen.get());
