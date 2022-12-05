@@ -5,8 +5,8 @@ import java.util.*;
 public class DrawingAndThrashPile {
     private List<Card> drawingPile;
     private List<Card> thrashPile;
-    private final Game game;
     private List<Card> cardsDiscardedThisTurn;
+    private ShuffleStrategy shuffleStrategy;
 
     public DrawingAndThrashPile(Game game) {
         Map<String, Integer> cardCount = new HashMap<>();
@@ -28,19 +28,16 @@ public class DrawingAndThrashPile {
             }
         }
         Collections.shuffle(cards, new Random());
+        shuffleStrategy = new FirstShuffle();
         drawingPile = cards;
         thrashPile = new ArrayList<>();
-        this.game = game;
         cardsDiscardedThisTurn = new ArrayList<>();
     }
 
     public List<Card> discardAndDraw(List<Card> discard) {
         cardsDiscardedThisTurn = new ArrayList<>(discard);
         if (discard.size() > drawingPile.size()) {
-            List<List<Card>> returnedList = shuffle(drawingPile, thrashPile, discard);
-            drawingPile = returnedList.get(0);
-            thrashPile = returnedList.get(1);
-            return returnedList.get(2);
+            return shuffle(drawingPile, thrashPile, discard);
         }
         thrashPile.addAll(discard);
         List<Card> drawnCards = new ArrayList<>();
@@ -57,8 +54,11 @@ public class DrawingAndThrashPile {
         return cardsDiscardedThisTurn;
     }
 
-    private List<List<Card>> shuffle(List<Card> drawingPile, List<Card> thrashPile, List<Card> cardsToBeDiscarded) {
-        return game.gameAdaptor.gameObservable.shuffleStrategy.shuffle(drawingPile, thrashPile, cardsToBeDiscarded);
+    private List<Card> shuffle(List<Card> drawingPile, List<Card> thrashPile, List<Card> cardsToBeDiscarded) {
+        List<Card> drawnCards = shuffleStrategy.shuffle(drawingPile, thrashPile, cardsToBeDiscarded);
+        this.drawingPile = shuffleStrategy.getDrawingPile();
+        this.thrashPile = shuffleStrategy.getThrashPile();
+        return drawnCards;
     }
 
     public List<Card> draw5Cards(){
@@ -67,5 +67,8 @@ public class DrawingAndThrashPile {
             cards.add(drawingPile.remove(drawingPile.size() - 1));
         }
         return cards;
+    }
+    public void setShuffleStrategy(ShuffleStrategy shuffleStrategy){
+        this.shuffleStrategy = shuffleStrategy;
     }
 }

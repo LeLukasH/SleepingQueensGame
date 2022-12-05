@@ -3,6 +3,7 @@ package sleepingQueens;
 import java.util.List;
 
 public interface ShuffleStrategy {
-    // List<List<Card>> = newDrawingPile, newThrashPile, drawnCards
-    List<List<Card>> shuffle(List<Card> drawingPile, List<Card> thrashPile, List<Card> cardsToBeDiscarded);
+    List<Card> shuffle(List<Card> drawingPile, List<Card> thrashPile, List<Card> cardsToBeDiscarded); // returns drawnCards;
+    List<Card> getDrawingPile();
+    List<Card> getThrashPile();
 }

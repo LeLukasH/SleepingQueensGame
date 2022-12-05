@@ -17,8 +17,7 @@ public class GameAdaptor implements GamePlayerInterface{
     public String play(String player, String cards) {
         int playerIndex = playerConverter.get(player);
         List<Position> cardsSend = new ArrayList<>();
-        String[] split = cards.split(" ");
-        for (String x : split) {
+        for (String x : cards.split(" ")) {
             int cardIndex = Integer.parseInt(String.valueOf(x.charAt(1)));
             switch (x.charAt(0)) {
                 case 'h' -> cardsSend.add(new HandPosition(cardIndex, playerIndex));
@@ -26,6 +25,8 @@ public class GameAdaptor implements GamePlayerInterface{
                 case 's' -> cardsSend.add(new SleepingQueenPosition(Integer.parseInt(x.substring(1))));
             }
         }
-        return game.play(playerIndex, cardsSend).toString();
+        Optional<GameState> gs = game.play(playerIndex, cardsSend);
+        if (gs.isEmpty()) return "Error...";
+        return gs.get().toString();
     }
 }

@@ -8,7 +8,6 @@ public class SleepingQueens extends QueenCollection {
 
     public SleepingQueens (Game game) {
         this.game = game;
-
         // Initialize Sleeping Queens
         queens = new HashMap<>();
         ArrayList<Integer> cardIndexes = new ArrayList<>();

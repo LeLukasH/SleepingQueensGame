@@ -3,24 +3,28 @@ package sleepingQueens;
 import java.util.*;
 
 public class FirstDraw implements ShuffleStrategy{
+    private List<Card> drawingPile;
+    private List<Card> thrashPile;
     @Override
-    public List<List<Card>> shuffle(List<Card> drawingPile, List<Card> thrashPile, List<Card> cardsToBeDiscarded) {
-        List<List<Card>> returningList = new ArrayList<>();
-        List<Card> returnCards = new ArrayList<>();
+    public List<Card> shuffle(List<Card> drawingPile, List<Card> thrashPile, List<Card> cardsToBeDiscarded) {
+        List<Card> drawnCards = new ArrayList<>();
         int needToBeDrawn = cardsToBeDiscarded.size() - drawingPile.size();
         thrashPile.addAll(cardsToBeDiscarded);
         for (int i = 0; i < drawingPile.size(); i++) {
-            returnCards.add(drawingPile.remove(drawingPile.size() - 1));
+            drawnCards.add(drawingPile.remove(drawingPile.size() - 1));
         }
-        List<Card> newDrawingPile = new ArrayList<>(thrashPile);
-        Collections.shuffle(newDrawingPile);
+        this.drawingPile = new ArrayList<>(thrashPile);
+        Collections.shuffle(this.drawingPile);
         for (int i = 0; i < needToBeDrawn; i++) {
-            returnCards.add(newDrawingPile.remove(newDrawingPile.size() - 1));
+            drawnCards.add(this.drawingPile.remove(this.drawingPile.size() - 1));
         }
-        List<Card> newThrashPile = new ArrayList<>();
-        returningList.add(newDrawingPile);
-        returningList.add(newThrashPile);
-        returningList.add(returnCards);
-        return returningList;
+        this.thrashPile = new ArrayList<>();
+        return drawnCards;
+    }
+    public List<Card> getDrawingPile() {
+        return drawingPile;
+    }
+    public List<Card> getThrashPile() {
+        return thrashPile;
     }
 }

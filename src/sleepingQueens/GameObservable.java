@@ -3,14 +3,12 @@ package sleepingQueens;
 import java.util.*;
 
 public class GameObservable {
-    public ShuffleStrategy shuffleStrategy;
     private final List<ObserverInterface> allObservers;
     public Map<Integer, ObserverInterface> playersObservers;
     private final GameAdaptor gameAdaptor;
 
     public GameObservable(GameAdaptor gameAdaptor) {
         this.gameAdaptor = gameAdaptor;
-        shuffleStrategy = new FirstShuffle();
         allObservers = new ArrayList<>();
         playersObservers = new HashMap<>();
     }
@@ -22,7 +20,6 @@ public class GameObservable {
     public void addPlayer(int playerIdx, ObserverInterface observer) {
         gameAdaptor.game.players.put(playerIdx, new Player(gameAdaptor.game, playerIdx));
         gameAdaptor.game.gameState.numberOfPlayers += 1;
-        gameAdaptor.game.playersOrder.add(playerIdx);
         playersObservers.put(playerIdx, observer);
         allObservers.add(observer);
     }
@@ -44,9 +41,5 @@ public class GameObservable {
         for (GameObserver o : allObservers) {
             o.notify(notifyingMessage);
         }
-    }
-
-    public void setShuffleStrategy(ShuffleStrategy shuffleStrategy){
-        this.shuffleStrategy = shuffleStrategy;
     }
 }

@@ -9,8 +9,6 @@ public class Game {
     public DrawingAndThrashPile drawingAndThrashPile;
     public GameState gameState;
     public Map<Integer, Player> players;
-    public List<Integer> playersOrder;
-    private int onTurn;
 
     public Game(GameAdaptor gameAdaptor) {
         this.gameAdaptor = gameAdaptor;
@@ -18,14 +16,13 @@ public class Game {
         sleepingQueens = new SleepingQueens(this);
         gameState = new GameState();
         gameState.numberOfPlayers = players.size();
-        onTurn = 0;
+        gameState.onTurn = 0;
     }
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
         if (!players.containsKey(playerIdx)) return Optional.empty();
         players.get(playerIdx).play(cards);
         updateGameState();
         drawingAndThrashPile.newTurn();
-        onTurn = (onTurn + 1) % players.size();
         return Optional.ofNullable(gameState);
     }
 
@@ -48,6 +45,6 @@ public class Game {
             }
         }
         gameState.awokenQueens = playersQueens;
-        gameState.onTurn = (playersOrder.get(onTurn) + 1) % players.size();
+        gameState.onTurn = (gameState.onTurn + 1) % players.size();
     }
 }
