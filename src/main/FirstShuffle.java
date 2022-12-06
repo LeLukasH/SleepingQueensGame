@@ -1,5 +1,3 @@
-package main;
-
 import java.util.*;
 
 public class FirstShuffle implements ShuffleStrategy{

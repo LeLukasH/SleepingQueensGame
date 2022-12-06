@@ -1,5 +1,3 @@
-package main;
-
 import java.util.*;
 
 public class Game {
@@ -11,7 +9,7 @@ public class Game {
     private final GameFinishedStrategy gameFinished;
 
     public Game(int numberOfPlayers) {
-        drawingAndThrashPile = new DrawingAndThrashPile(this);
+        drawingAndThrashPile = new DrawingAndThrashPile();
         sleepingQueens = new SleepingQueens();
         for (int i = 0; i < numberOfPlayers; i++) {
             players.put(i, new Player(this, i));

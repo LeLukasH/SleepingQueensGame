@@ -1,5 +1,3 @@
-package main;
-
 import java.util.Objects;
 
 public class HandPosition implements Position{

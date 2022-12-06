@@ -1,5 +1,3 @@
-package main;
-
 public class Queen {
     private final int points;
     public Queen(int points) {

@@ -1,5 +1,3 @@
-package main;
-
 public class ObserverInterface implements GameObserver{
     private String message;
     @Override

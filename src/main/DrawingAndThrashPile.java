@@ -1,5 +1,3 @@
-package main;
-
 import java.util.*;
 
 public class DrawingAndThrashPile {
@@ -8,7 +6,7 @@ public class DrawingAndThrashPile {
     private List<Card> cardsDiscardedThisTurn;
     private ShuffleStrategy shuffleStrategy;
 
-    public DrawingAndThrashPile(Game game) {
+    public DrawingAndThrashPile() {
         Map<String, Integer> cardCount = new HashMap<>();
         cardCount.put("Kings", 8);
         cardCount.put("Knights", 4);

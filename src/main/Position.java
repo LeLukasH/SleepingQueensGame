@@ -1,5 +1,3 @@
-package main;
-
 public interface Position {
 
     int getCardIndex();
