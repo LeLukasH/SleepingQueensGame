@@ -11,6 +11,7 @@ public class Game {
     public Game(int numberOfPlayers) {
         drawingAndThrashPile = new DrawingAndThrashPile();
         sleepingQueens = new SleepingQueens();
+        players = new HashMap<>();
         for (int i = 0; i < numberOfPlayers; i++) {
             players.put(i, new Player(this, i));
         }
