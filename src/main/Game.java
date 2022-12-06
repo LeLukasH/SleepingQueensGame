@@ -18,6 +18,7 @@ public class Game {
         gameState = new GameState();
         gameState.numberOfPlayers = numberOfPlayers;
         gameState.onTurn = 0;
+        updateGameState();
         gameFinished = new GameFinished(this);
     }
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
