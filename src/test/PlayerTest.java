@@ -5,13 +5,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PlayerTest {
     private Player player;
 
     void setUp() {
         Game game = mock(Game.class);
-        game = new Game(1);
+        when(game.drawingAndThrashPile).thenReturn(new DrawingAndThrashPile());
         player = new Player(game, 0);
     }
 
