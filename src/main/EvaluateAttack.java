@@ -12,15 +12,15 @@ public class EvaluateAttack {
         this.returnQueenCollection = returnQueenCollection;
     }
     public boolean play(Position targetQueen, int targetPlayerIdx) {
-        if (targetPlayerIdx >= player.game.players.size()) return false;
-        if (!player.game.players.get(targetPlayerIdx).awokenQueens.getQueens().containsKey(targetQueen)) return false;
+        if (targetPlayerIdx >= player.getGame().getPlayers().size()) return false;
+        if (!player.getGame().getPlayers().get(targetPlayerIdx).getAwokenQueens().getQueens().containsKey(targetQueen)) return false;
 
-        HandPosition defenseCardPosition = player.game.players.get(targetPlayerIdx).hand.hasCardOfType(defenseCardType);
+        HandPosition defenseCardPosition = player.getGame().getPlayers().get(targetPlayerIdx).getHand().hasCardOfType(defenseCardType);
         if(defenseCardPosition != null) {
             ArrayList<HandPosition> positions = new ArrayList<>();
             positions.add(defenseCardPosition);
-            player.game.players.get(targetPlayerIdx).hand.pickCards(positions);
-            player.game.players.get(targetPlayerIdx).hand.removePickedCardsAndRedraw();
+            player.getGame().getPlayers().get(targetPlayerIdx).getHand().pickCards(positions);
+            player.getGame().getPlayers().get(targetPlayerIdx).getHand().removePickedCardsAndRedraw();
         }
         else {
             MoveQueen moveQueen = new MoveQueen(player, returnQueenCollection);

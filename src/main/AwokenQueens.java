@@ -10,8 +10,9 @@ public class AwokenQueens extends QueenCollection{
     }
     @Override
     public void addQueen(Queen queen) {
-        queens.put(new AwokenQueenPosition(queens.size(), player.playerIndex), queen);
+        queens.put(new AwokenQueenPosition(queens.size(), player.getPlayerIndex()), queen);
     }
+
     @Override
     public Optional<Queen> removeQueen(Position position) {
         Optional<Queen> removedQueen = Optional.ofNullable(queens.remove(position));
@@ -23,6 +24,7 @@ public class AwokenQueens extends QueenCollection{
         }
         return removedQueen;
     }
+
     @Override
     public Map<Position, Queen> getQueens() {
         return queens;

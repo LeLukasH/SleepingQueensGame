@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Game {
 
-    public SleepingQueens sleepingQueens;
-    public DrawingAndThrashPile drawingAndThrashPile;
-    public GameState gameState;
-    public Map<Integer, Player> players;
+    private final SleepingQueens sleepingQueens;
+    private final DrawingAndThrashPile drawingAndThrashPile;
+    private final GameState gameState;
+    private final Map<Integer, Player> players;
     private final GameFinishedStrategy gameFinished;
 
     public Game(int numberOfPlayers) {
@@ -63,5 +63,18 @@ public class Game {
             }
         }
         gameState.awokenQueens = playersQueens;
+    }
+
+    public SleepingQueens getSleepingQueens() {
+        return sleepingQueens;
+    }
+    public DrawingAndThrashPile getDrawingAndThrashPile() {
+        return drawingAndThrashPile;
+    }
+    public GameState getGameState(){
+        return gameState;
+    }
+    public Map<Integer, Player> getPlayers() {
+        return players;
     }
 }

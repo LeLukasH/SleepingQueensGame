@@ -2,11 +2,12 @@ import java.util.*;
 
 public class GameAdaptor implements GamePlayerInterface{
 
-    public Game game;
-    public GameObservable gameObservable;
-    public Map<String, Integer> playerConverterString; // External -> Internal (PlayerIdx)
+    private Game game;
+    private GameObservable gameObservable;
+    private final Map<String, Integer> playerConverterString; // External -> Internal (PlayerIdx)
 
-    public GameAdaptor(GameObservable gameObservable) {
+    public GameAdaptor(GameObservable gameObservable, Map<String, Integer> playerConverterString) {
+        this.playerConverterString = playerConverterString;
         if (gameObservable.getNumberOfPlayers() < 2){
             System.out.println("Too little players!");
         }
@@ -35,6 +36,6 @@ public class GameAdaptor implements GamePlayerInterface{
     }
 
     public void setShuffleStrategy(ShuffleStrategy shuffleStrategy) {
-        game.drawingAndThrashPile.setShuffleStrategy(shuffleStrategy);
+        game.getDrawingAndThrashPile().setShuffleStrategy(shuffleStrategy);
     }
 }

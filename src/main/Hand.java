@@ -1,17 +1,17 @@
 import java.util.*;
 
 public class Hand {
-    public int playerIdx;
+    private final int playerIdx;
     private final Player player;
     private final List<Card> pickedCards;
     private final List<Card> cards;
 
     public Hand(Player player) {
         this.player = player;
-        playerIdx = player.playerIndex;
+        playerIdx = player.getPlayerIndex();
         pickedCards = new ArrayList<>();
         cards = new ArrayList<>();
-        cards.addAll(player.game.drawingAndThrashPile.draw5Cards());
+        cards.addAll(player.getGame().getDrawingAndThrashPile().draw5Cards());
     }
 
     public Optional<List<Card>> pickCards(List<HandPosition> positions) {
@@ -24,7 +24,7 @@ public class Hand {
     public Map<HandPosition, Card> removePickedCardsAndRedraw() {
         cards.removeAll(pickedCards);
         Map<HandPosition, Card> returningMap = new HashMap<>();
-        List<Card> drawnCards = player.game.drawingAndThrashPile.discardAndDraw(pickedCards);
+        List<Card> drawnCards = player.getGame().getDrawingAndThrashPile().discardAndDraw(pickedCards);
         for (int i = 0; i < drawnCards.size(); i++) {
             returningMap.put(new HandPosition(i + cards.size(), playerIdx), drawnCards.get(i));
         }

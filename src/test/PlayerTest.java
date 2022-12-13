@@ -17,7 +17,7 @@ public class PlayerTest {
     public void testPlayCards() {
         setUp();
         List<Position> positions = new ArrayList<>();
-        positions.add(new HandPosition(1, player.playerIndex));
+        positions.add(new HandPosition(1, player.getPlayerIndex()));
         assertTrue(player.play(positions));
     }
 }

@@ -8,11 +8,11 @@ public class GameFinished implements GameFinishedStrategy{
 
     public GameFinished(Game game) {
         this.game = game;
-        if (game.gameState.numberOfPlayers == 2 || game.gameState.numberOfPlayers == 3) {
+        if (game.getGameState().numberOfPlayers == 2 || game.getGameState().numberOfPlayers == 3) {
             scoreLine = 50;
             queenLine = 5;
         }
-        else if (game.gameState.numberOfPlayers == 4 || game.gameState.numberOfPlayers == 5) {
+        else if (game.getGameState().numberOfPlayers == 4 || game.getGameState().numberOfPlayers == 5) {
             scoreLine = 40;
             queenLine = 4;
         }
@@ -25,7 +25,7 @@ public class GameFinished implements GameFinishedStrategy{
     public Optional<Integer> isFinished() {
         Map<Integer, Integer> playerPoints = new HashMap<>(); // playerIdx, points
         Map<Integer, Integer> playerQueens = new HashMap<>(); // playerIdx, queenCount
-        for (Map.Entry<AwokenQueenPosition, Queen> entry : game.gameState.awokenQueens.entrySet()) {
+        for (Map.Entry<AwokenQueenPosition, Queen> entry : game.getGameState().awokenQueens.entrySet()) {
             int playerIdx = entry.getKey().getPlayerIndex();
             playerPoints.put(playerIdx, playerPoints.getOrDefault(playerIdx, 0) + entry.getValue().getPoints());
             playerQueens.put(playerIdx, playerQueens.getOrDefault(playerIdx, 0) + 1);
@@ -33,7 +33,7 @@ public class GameFinished implements GameFinishedStrategy{
                 return Optional.of(playerIdx);
             }
         }
-        if (game.gameState.sleepingQueens.isEmpty()) {
+        if (game.getGameState().sleepingQueens.isEmpty()) {
             int maxPoints = -1;
             int winningPlayerIdx = -1;
             for (Map.Entry<Integer, Integer> entry : playerPoints.entrySet()) {

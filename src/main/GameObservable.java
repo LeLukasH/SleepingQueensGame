@@ -2,7 +2,7 @@ import java.util.*;
 
 public class GameObservable {
     private final List<GameObserver> allObservers;
-    public Map<Integer, GameObserver> playersObservers;
+    private final Map<Integer, GameObserver> playersObservers;
 
     public GameObservable() {
         allObservers = new ArrayList<>();

@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Player {
 
-    public Game game;
-    public int playerIndex;
-    public Hand hand;
-    public AwokenQueens awokenQueens;
+    private final Game game;
+    private final int playerIndex;
+    private final Hand hand;
+    private final AwokenQueens awokenQueens;
 
     public Player(Game game, int playerIndex) {
         this.game = game;
@@ -55,7 +55,7 @@ public class Player {
                 case SLEEPING_POTION:
                     targetQueen = cards.get(1);
                     if (!(targetQueen instanceof AwokenQueenPosition)) return false;
-                    evaluateAttack = new EvaluateAttack(CardType.MAGIC_WAND, this, game.sleepingQueens);
+                    evaluateAttack = new EvaluateAttack(CardType.MAGIC_WAND, this, game.getSleepingQueens());
                     if (!evaluateAttack.play(targetQueen, ((AwokenQueenPosition) targetQueen).getPlayerIndex())) {
                         return false;
                     }
@@ -142,5 +142,18 @@ public class Player {
         playerState.awokenQueens = queens;
 
         return playerState;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+    public int getPlayerIndex() {
+        return playerIndex;
+    }
+    public Hand getHand() {
+        return hand;
+    }
+    public AwokenQueens getAwokenQueens() {
+        return awokenQueens;
     }
 }
