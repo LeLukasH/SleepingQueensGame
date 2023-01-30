@@ -1,13 +1,19 @@
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Optional;
 
 public class AwokenQueensTest {
 
+    private AwokenQueens awakenedQueens;
+    @Before
+    public void setUp(){
+        awakenedQueens = new AwokenQueens(1);
+    }
+
     @Test
     public void addQueen() {
-        AwokenQueens awakenedQueens = new AwokenQueens(1);
         Queen queen = new Queen(10);
         awakenedQueens.addQueen(queen);
         Assert.assertEquals(1, awakenedQueens.getQueens().size());
@@ -15,7 +21,6 @@ public class AwokenQueensTest {
 
     @Test
     public void removeQueen() {
-        AwokenQueens awakenedQueens = new AwokenQueens(1);
         Queen queen1 = new Queen(15);
         Queen queen2 = new Queen(10);
         awakenedQueens.addQueen(queen1);
@@ -27,7 +32,6 @@ public class AwokenQueensTest {
 
     @Test
     public void removeQueenReturnsRemovedQueen() {
-        AwokenQueens awakenedQueens = new AwokenQueens(1);
         Queen queen1 = new Queen(10);
         awakenedQueens.addQueen(queen1);
         Optional<Queen> removedQueen = awakenedQueens.removeQueen(new AwokenQueenPosition(0,1));

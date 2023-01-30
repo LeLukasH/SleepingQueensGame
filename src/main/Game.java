@@ -21,6 +21,7 @@ public class Game {
 
         this.gameFinished = new GameFinished(gameState);
     }
+
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
         if (!players.containsKey(playerIdx) || playerIdx != gameState.onTurn) return Optional.empty();
         if (players.get(playerIdx).play(cards)) {
