@@ -6,28 +6,10 @@ public class DrawingAndThrashPile {
     private List<Card> cardsDiscardedThisTurn;
     private ShuffleStrategy shuffleStrategy;
 
-    public DrawingAndThrashPile() {
-        Map<String, Integer> cardCount = new HashMap<>();
-        cardCount.put("Kings", 8);
-        cardCount.put("Knights", 4);
-        cardCount.put("SleepingPotions", 4);
-        cardCount.put("Wands", 3);
-        cardCount.put("Dragons", 3);
-        cardCount.put("NumberedCards", 4);
-        ArrayList<Card> cards = new ArrayList<>();
-        for (int i = 0; i < cardCount.get("Kings"); i++) {cards.add(new Card(CardType.KING, 0));}
-        for (int i = 0; i < cardCount.get("Knights"); i++) {cards.add(new Card(CardType.KNIGHT, 0));}
-        for (int i = 0; i < cardCount.get("SleepingPotions"); i++) {cards.add(new Card(CardType.SLEEPING_POTION, 0));}
-        for (int i = 0; i < cardCount.get("Wands"); i++) {cards.add(new Card(CardType.MAGIC_WAND, 0));}
-        for (int i = 0; i < cardCount.get("Dragons"); i++) {cards.add(new Card(CardType.DRAGON, 0));}
-        for (int i = 0; i < cardCount.get("NumberedCards"); i++) {
-            for (int j = 1; j <= 10; j++) {
-                cards.add(new Card(CardType.NUMBER, j));
-            }
-        }
-        Collections.shuffle(cards, new Random());
+    public DrawingAndThrashPile(boolean shuffleOnStart) {
+        drawingPile = getNewPile();
+        if (shuffleOnStart) Collections.shuffle(drawingPile, new Random());
         shuffleStrategy = new FirstShuffle();
-        drawingPile = cards;
         thrashPile = new ArrayList<>();
         cardsDiscardedThisTurn = new ArrayList<>();
     }
@@ -68,5 +50,37 @@ public class DrawingAndThrashPile {
     }
     public void setShuffleStrategy(ShuffleStrategy shuffleStrategy){
         this.shuffleStrategy = shuffleStrategy;
+    }
+
+    protected List<Card> getNewPile(){
+        Map<String, Integer> cardCount = new HashMap<>();
+        cardCount.put("Kings", 8);
+        cardCount.put("Knights", 4);
+        cardCount.put("SleepingPotions", 4);
+        cardCount.put("Wands", 3);
+        cardCount.put("Dragons", 3);
+        cardCount.put("NumberedCards", 4);
+        ArrayList<Card> cards = new ArrayList<>();
+        for (int i = 0; i < cardCount.get("Kings"); i++) {cards.add(new Card(CardType.KING, 0));}
+        for (int i = 0; i < cardCount.get("Knights"); i++) {cards.add(new Card(CardType.KNIGHT, 0));}
+        for (int i = 0; i < cardCount.get("SleepingPotions"); i++) {cards.add(new Card(CardType.SLEEPING_POTION, 0));}
+        for (int i = 0; i < cardCount.get("Wands"); i++) {cards.add(new Card(CardType.MAGIC_WAND, 0));}
+        for (int i = 0; i < cardCount.get("Dragons"); i++) {cards.add(new Card(CardType.DRAGON, 0));}
+        for (int i = 0; i < cardCount.get("NumberedCards"); i++) {
+            for (int j = 1; j <= 10; j++) {
+                cards.add(new Card(CardType.NUMBER, j));
+            }
+        }
+        return cards;
+    }
+
+    public List<Card> getDrawingPile(){
+        return this.drawingPile;
+    }
+    public List<Card> getThrashPile(){
+        return this.thrashPile;
+    }
+    public ShuffleStrategy getShuffleStrategy(){
+        return this.shuffleStrategy;
     }
 }

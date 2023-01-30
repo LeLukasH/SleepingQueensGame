@@ -9,17 +9,17 @@ public class Game {
     private final GameFinishedStrategy gameFinished;
 
     public Game(int numberOfPlayers) {
-        drawingAndThrashPile = new DrawingAndThrashPile();
         sleepingQueens = new SleepingQueens();
-        players = new HashMap<>();
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.put(i, new Player(this, i));
-        }
+        drawingAndThrashPile = new DrawingAndThrashPile(true);
+
+        players = createPlayers(numberOfPlayers, sleepingQueens, drawingAndThrashPile);
+
         gameState = new GameState();
         gameState.numberOfPlayers = numberOfPlayers;
         gameState.onTurn = 0;
         updateGameState();
-        gameFinished = new GameFinished(this);
+
+        this.gameFinished = new GameFinished(gameState);
     }
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
         if (!players.containsKey(playerIdx) || playerIdx != gameState.onTurn) return Optional.empty();
@@ -33,7 +33,7 @@ public class Game {
                 System.out.println("Game Over");
                 gameState.onTurn = -1;
             }
-            return Optional.ofNullable(gameState);
+            return Optional.of(gameState);
         }
         System.out.println("Play Again...");
         return Optional.empty();
@@ -65,16 +65,18 @@ public class Game {
         gameState.awokenQueens = playersQueens;
     }
 
-    public SleepingQueens getSleepingQueens() {
-        return sleepingQueens;
-    }
     public DrawingAndThrashPile getDrawingAndThrashPile() {
         return drawingAndThrashPile;
     }
-    public GameState getGameState(){
-        return gameState;
-    }
-    public Map<Integer, Player> getPlayers() {
-        return players;
+
+    private Map<Integer, Player> createPlayers(int numberOfPlayers, SleepingQueens sleepingQueens, DrawingAndThrashPile drawingAndThrashPile){
+        Map<Integer, Player> returnPlayers = new HashMap<>();
+        MoveQueen moveQueen = new MoveQueen(returnPlayers, sleepingQueens);
+        EvaluateAttack evaluateAttack = new EvaluateAttack(returnPlayers, moveQueen);
+        EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
+        for (int i = 0; i < numberOfPlayers; i++) {
+            players.put(i, new Player(moveQueen, evaluateAttack, evaluateNumberedCards, drawingAndThrashPile, i));
+        }
+        return returnPlayers;
     }
 }

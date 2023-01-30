@@ -2,16 +2,16 @@ import java.util.*;
 
 public class Hand {
     private final int playerIdx;
-    private final Player player;
+    private final DrawingAndThrashPile drawingAndThrashPile;
     private final List<Card> pickedCards;
     private final List<Card> cards;
 
-    public Hand(Player player) {
-        this.player = player;
-        playerIdx = player.getPlayerIndex();
+    public Hand(DrawingAndThrashPile drawingAndThrashPile, int playerIndex) {
+        this.drawingAndThrashPile = drawingAndThrashPile;
+        this.playerIdx = playerIndex;
         pickedCards = new ArrayList<>();
         cards = new ArrayList<>();
-        cards.addAll(player.getGame().getDrawingAndThrashPile().draw5Cards());
+        cards.addAll(drawingAndThrashPile.draw5Cards());
     }
 
     public Optional<List<Card>> pickCards(List<HandPosition> positions) {
@@ -24,7 +24,7 @@ public class Hand {
     public Map<HandPosition, Card> removePickedCardsAndRedraw() {
         cards.removeAll(pickedCards);
         Map<HandPosition, Card> returningMap = new HashMap<>();
-        List<Card> drawnCards = player.getGame().getDrawingAndThrashPile().discardAndDraw(pickedCards);
+        List<Card> drawnCards = drawingAndThrashPile.discardAndDraw(pickedCards);
         for (int i = 0; i < drawnCards.size(); i++) {
             returningMap.put(new HandPosition(i + cards.size(), playerIdx), drawnCards.get(i));
         }
@@ -32,16 +32,22 @@ public class Hand {
         returnPickedCards();
         return returningMap;
     }
+
     public void returnPickedCards() {
         pickedCards.clear();
     }
+
     public HandPosition hasCardOfType(CardType type) {
         for (int i = 0; i < cards.size(); i++) {
-            if (cards.get(i).type == type) return new HandPosition(i, playerIdx);
+            if (cards.get(i).type.equals(type)) return new HandPosition(i, playerIdx);
         }
         return null;
     }
     public List<Card> getCards() {
         return cards;
+    }
+
+    protected List<Card> getPickedCards() {
+        return pickedCards;
     }
 }

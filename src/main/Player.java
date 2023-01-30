@@ -2,16 +2,21 @@ import java.util.*;
 
 public class Player {
 
-    private final Game game;
     private final int playerIndex;
     private final Hand hand;
     private final AwokenQueens awokenQueens;
+    private final MoveQueen moveQueen;
+    private final EvaluateAttack evaluateAttack;
+    private final EvaluateNumberedCards evaluateNumberedCards;
 
-    public Player(Game game, int playerIndex) {
-        this.game = game;
-        hand = new Hand(this);
+    public Player(MoveQueen moveQueen, EvaluateAttack evaluateAttack, EvaluateNumberedCards evaluateNumberedCards, DrawingAndThrashPile drawingAndThrashPile, int playerIndex) {
+        this.moveQueen = moveQueen;
+        this.evaluateAttack = evaluateAttack;
+        this.evaluateNumberedCards = evaluateNumberedCards;
         this.playerIndex = playerIndex;
-        awokenQueens = new AwokenQueens(this);
+
+        hand = new Hand(drawingAndThrashPile, playerIndex);
+        awokenQueens = new AwokenQueens(playerIndex);
     }
 
     public boolean play(List<Position> cards) {
@@ -34,10 +39,10 @@ public class Player {
                 System.out.println("You do not have this card...");
                 return false;
             }
+            moveQueen.setReturnQueenCollection(awokenQueens);
             switch(firstCard.get().type) {
                 case KING:
                     Position targetQueen = cards.get(1);
-                    MoveQueen moveQueen = new MoveQueen(this, awokenQueens);
                     if (!moveQueen.play(targetQueen)) {
                         return false;
                     }
@@ -46,7 +51,7 @@ public class Player {
                 case KNIGHT:
                     targetQueen = cards.get(1);
                     if (!(targetQueen instanceof AwokenQueenPosition)) return false;
-                    EvaluateAttack evaluateAttack = new EvaluateAttack(CardType.DRAGON, this, awokenQueens);
+                    evaluateAttack.setDefenseCardType(CardType.DRAGON);
                     if (!evaluateAttack.play(targetQueen, ((AwokenQueenPosition) targetQueen).getPlayerIndex())) {
                         return false;
                     }
@@ -55,7 +60,8 @@ public class Player {
                 case SLEEPING_POTION:
                     targetQueen = cards.get(1);
                     if (!(targetQueen instanceof AwokenQueenPosition)) return false;
-                    evaluateAttack = new EvaluateAttack(CardType.MAGIC_WAND, this, game.getSleepingQueens());
+                    evaluateAttack.setDefenseCardType(CardType.MAGIC_WAND);
+                    moveQueen.setReturnQueenCollectionToSleepingQueens();
                     if (!evaluateAttack.play(targetQueen, ((AwokenQueenPosition) targetQueen).getPlayerIndex())) {
                         return false;
                     }
@@ -76,7 +82,6 @@ public class Player {
                         return false;
                     }
                     else {
-                        EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
                         if (!evaluateNumberedCards.play(List.of(firstCard.get(), secondCard.get()))) {
                             return false;
                         }
@@ -110,7 +115,6 @@ public class Player {
                     return false;
                 }
             }
-            EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
             if (!evaluateNumberedCards.play(evaluateCards)) {
                 System.out.println("Bad number combination...");
                 return false;
@@ -144,12 +148,6 @@ public class Player {
         return playerState;
     }
 
-    public Game getGame() {
-        return game;
-    }
-    public int getPlayerIndex() {
-        return playerIndex;
-    }
     public Hand getHand() {
         return hand;
     }

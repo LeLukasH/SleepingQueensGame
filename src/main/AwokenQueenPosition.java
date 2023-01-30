@@ -28,4 +28,9 @@ public class AwokenQueenPosition implements Position{
     public int hashCode() {
         return Objects.hash(cardIndex, playerIndex);
     }
+
+    @Override
+    public String toString() {
+        return "" + cardIndex + ", " + playerIndex;
+    }
 }

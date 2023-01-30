@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class SleepingQueens extends QueenCollection {
-    private final Map<Position, Queen> queens;
+    private Map<Position, Queen> queens;
 
     public SleepingQueens () {
         queens = new HashMap<>();
@@ -21,11 +21,14 @@ public class SleepingQueens extends QueenCollection {
     public Optional<Queen> removeQueen(Position position) {
         Optional<Queen> removedQueen = Optional.ofNullable(queens.remove(position));
         int removedCardIndex = position.getCardIndex();
+        Map<Position, Queen> map = new HashMap<>();
         for (Map.Entry<Position, Queen> entry : queens.entrySet()) {
             if (entry.getKey().getCardIndex() > removedCardIndex) {
                 entry.getKey().setCardIndex(entry.getKey().getCardIndex() - 1);
             }
+            map.put(entry.getKey(), entry.getValue());
         }
+        this.queens = map;
         return removedQueen;
     }
     @Override

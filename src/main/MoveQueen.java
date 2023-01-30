@@ -1,27 +1,37 @@
+import java.util.Map;
 import java.util.Optional;
 
 public class MoveQueen {
-    private final QueenCollection returnQueenCollection;
-    private final Player player;
+    private QueenCollection returnQueenCollection;
+    private final Map<Integer, Player> players;
+    private final SleepingQueens sleepingQueens;
 
-    public MoveQueen(Player player, QueenCollection returnQueenCollection) {
-        this.returnQueenCollection = returnQueenCollection;
-        this.player = player;
+    public MoveQueen(Map<Integer, Player> players, SleepingQueens sleepingQueens) {
+        this.players = players;
+        this.sleepingQueens = sleepingQueens;
+        setReturnQueenCollectionToSleepingQueens();
     }
     public boolean play(Position targetQueen) {
         if (targetQueen instanceof SleepingQueenPosition) {
-            Optional<Queen> removedQueen = player.getGame().getSleepingQueens().removeQueen(targetQueen);
+            Optional<Queen> removedQueen = sleepingQueens.removeQueen(targetQueen);
             if (removedQueen.isEmpty()) return false;
             returnQueenCollection.addQueen(removedQueen.get());
             return true;
         }
         else if (targetQueen instanceof AwokenQueenPosition) {
             int targetPlayerIndex = ((AwokenQueenPosition) targetQueen).getPlayerIndex();
-            Optional<Queen> removedQueen = player.getGame().getPlayers().get(targetPlayerIndex).getAwokenQueens().removeQueen(targetQueen);
+            Optional<Queen> removedQueen = players.get(targetPlayerIndex).getAwokenQueens().removeQueen(targetQueen);
             if (removedQueen.isEmpty()) return false;
             returnQueenCollection.addQueen(removedQueen.get());
             return true;
         }
         else return false;
+    }
+
+    public void setReturnQueenCollection(QueenCollection queenCollection) {
+        this.returnQueenCollection = queenCollection;
+    }
+    public void setReturnQueenCollectionToSleepingQueens() {
+        this.returnQueenCollection = sleepingQueens;
     }
 }

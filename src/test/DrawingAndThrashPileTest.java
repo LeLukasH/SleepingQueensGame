@@ -1,39 +1,67 @@
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawingAndThrashPileTest {
+
     private DrawingAndThrashPile drawingAndThrashPile;
 
-    void setUp() {
-        drawingAndThrashPile = new DrawingAndThrashPile();
+    @Before
+    public void setUp() {
+        drawingAndThrashPile = new DrawingAndThrashPile(false);
     }
 
     @Test
-    public void testDrawCards() {
-        setUp();
-        List<Card> cardList = drawingAndThrashPile.draw5Cards();
-        assertEquals(5, cardList.size());
-        cardList.remove(cardList.get(2));
-        cardList.remove(cardList.get(1));
-        drawingAndThrashPile.newTurn();
-        List<Card> drawnCards = drawingAndThrashPile.discardAndDraw(cardList);
-        assertEquals(3, drawnCards.size());
+    public void discardAndDraw_shouldDiscardCardsAndDrawSameNumber() {
+        List<Card> cardsToDiscard = new ArrayList<>();
+        cardsToDiscard.add(new Card(CardType.KING, 0));
+        cardsToDiscard.add(new Card(CardType.KNIGHT, 0));
 
-        List<Card> emptyList = new ArrayList<>();
-        assertEquals(0, drawingAndThrashPile.discardAndDraw(emptyList).size());
+        List<Card> drawnCards = drawingAndThrashPile.discardAndDraw(cardsToDiscard);
+
+        Assert.assertEquals(2, drawnCards.size());
+        Assert.assertEquals(2, drawingAndThrashPile.getCardsDiscardedThisTurn().size());
     }
 
     @Test
-    public void testDiscardedCards() {
-        setUp();
-        List<Card> cardList = drawingAndThrashPile.draw5Cards();
-        cardList.remove(cardList.get(3));
-        drawingAndThrashPile.newTurn();
-        drawingAndThrashPile.discardAndDraw(cardList);
-        assertEquals(cardList, drawingAndThrashPile.getCardsDiscardedThisTurn());
+    public void discardAndDraw_shouldShuffleIfDiscardIsGreaterThanDrawingPileSize() {
+        List<Card> cardsToDiscard = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            cardsToDiscard.add(new Card(CardType.KING, 0));
+        }
+
+        List<Card> drawnCards = drawingAndThrashPile.discardAndDraw(cardsToDiscard);
+
+        Assert.assertEquals(30, drawnCards.size());
+        Assert.assertTrue(drawingAndThrashPile.getDrawingPile().size() > 0);
+        Assert.assertEquals(30, drawingAndThrashPile.getCardsDiscardedThisTurn().size());
     }
 
+    @Test
+    public void newTurn_shouldClearCardsDiscardedThisTurn() {
+        List<Card> cardsToDiscard = new ArrayList<>();
+        cardsToDiscard.add(new Card(CardType.KING, 0));
+        cardsToDiscard.add(new Card(CardType.KNIGHT, 0));
+        drawingAndThrashPile.discardAndDraw(cardsToDiscard);
+
+        drawingAndThrashPile.newTurn();
+
+        Assert.assertEquals(0, drawingAndThrashPile.getCardsDiscardedThisTurn().size());
+    }
+
+    @Test
+    public void draw5Cards_shouldReturn5Cards() {
+        List<Card> drawnCards = drawingAndThrashPile.draw5Cards();
+        Assert.assertEquals(5, drawnCards.size());
+        Assert.assertEquals(drawingAndThrashPile.getNewPile().size() - 5, drawingAndThrashPile.getDrawingPile().size());
+    }
+
+    @Test
+    public void testGetNewPile() {
+        List<Card> newPile = drawingAndThrashPile.getNewPile();
+        Assert.assertEquals(newPile.size(), 62);
+    }
 }

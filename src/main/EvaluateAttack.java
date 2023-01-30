@@ -2,30 +2,32 @@ import java.util.*;
 
 public class EvaluateAttack {
 
-    private final CardType defenseCardType;
-    private final Player player;
-    private final QueenCollection returnQueenCollection;
+    private CardType defenseCardType;
+    private final Map<Integer, Player> players;
+    private final MoveQueen moveQueen;
 
-    public EvaluateAttack(CardType defenseCardType, Player player, QueenCollection returnQueenCollection) {
-        this.defenseCardType = defenseCardType;
-        this.player = player;
-        this.returnQueenCollection = returnQueenCollection;
+    public EvaluateAttack(Map<Integer, Player> players, MoveQueen moveQueen) {
+        this.defenseCardType = CardType.NUMBER;
+        this.players = players;
+        this.moveQueen = moveQueen;
     }
     public boolean play(Position targetQueen, int targetPlayerIdx) {
-        if (targetPlayerIdx >= player.getGame().getPlayers().size()) return false;
-        if (!player.getGame().getPlayers().get(targetPlayerIdx).getAwokenQueens().getQueens().containsKey(targetQueen)) return false;
+        if (targetPlayerIdx >= players.size()) return false;
+        if (!players.get(targetPlayerIdx).getAwokenQueens().getQueens().containsKey(targetQueen)) return false;
 
-        HandPosition defenseCardPosition = player.getGame().getPlayers().get(targetPlayerIdx).getHand().hasCardOfType(defenseCardType);
+        HandPosition defenseCardPosition = players.get(targetPlayerIdx).getHand().hasCardOfType(defenseCardType);
         if(defenseCardPosition != null) {
             ArrayList<HandPosition> positions = new ArrayList<>();
             positions.add(defenseCardPosition);
-            player.getGame().getPlayers().get(targetPlayerIdx).getHand().pickCards(positions);
-            player.getGame().getPlayers().get(targetPlayerIdx).getHand().removePickedCardsAndRedraw();
+            players.get(targetPlayerIdx).getHand().pickCards(positions);
+            players.get(targetPlayerIdx).getHand().removePickedCardsAndRedraw();
         }
         else {
-            MoveQueen moveQueen = new MoveQueen(player, returnQueenCollection);
             moveQueen.play(targetQueen);
         }
         return true;
+    }
+    public void setDefenseCardType(CardType cardType) {
+        this.defenseCardType = cardType;
     }
 }
